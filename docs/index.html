@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pure Style Slides — Designer-Quality Presentations from Claude</title>
+<meta name="description" content="A Claude skill that generates magazine-quality .pptx presentations with bold design, real data, and zero design skills required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0B;
+    --surface: #131316;
+    --surface-2: #1A1A1F;
+    --border: #2A2A30;
+    --text: #E8E8EC;
+    --text-muted: #8A8A95;
+    --accent: #FF6B35;
+    --accent-glow: rgba(255, 107, 53, 0.15);
+    --accent-2: #3B82F6;
+    --accent-3: #10B981;
+    --accent-4: #F59E0B;
+    --accent-5: #8B5CF6;
+    --font-display: 'Outfit', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── GRAIN OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-badge {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    text-align: center;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.1s both;
+  }
+
+  .hero-title .accent { color: var(--accent); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    font-weight: 300;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 600px;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.2s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.35s both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #e85a28; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,107,53,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--text-muted); background: var(--surface); transform: translateY(-2px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: bounce 2s ease infinite 2s;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 650px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  /* ─── COMPARISON BLOCK ─── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .compare-card.bad { border-color: rgba(239,68,68,0.2); }
+  .compare-card.good { border-color: rgba(255,107,53,0.3); }
+
+  .compare-card.good::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-4));
+  }
+
+  .compare-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .compare-card.bad .compare-label { color: #EF4444; }
+  .compare-card.good .compare-label { color: var(--accent); }
+
+  .compare-item {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .compare-item:last-child { border-bottom: none; }
+
+  .compare-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .compare-card.bad .dot { background: rgba(239,68,68,0.4); }
+  .compare-card.good .dot { background: var(--accent); }
+
+  /* ─── PIPELINE ─── */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .pipeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent-5));
+    border-radius: 2px;
+  }
+
+  .pipeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    position: relative;
+  }
+
+  .pipeline-dot {
+    position: absolute;
+    left: -3rem;
+    top: 1.75rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .pipeline-step:nth-child(1) .pipeline-dot { background: var(--accent); }
+  .pipeline-step:nth-child(2) .pipeline-dot { background: #E04E1A; }
+  .pipeline-step:nth-child(3) .pipeline-dot { background: var(--accent-2); }
+  .pipeline-step:nth-child(4) .pipeline-dot { background: #6366F1; }
+  .pipeline-step:nth-child(5) .pipeline-dot { background: var(--accent-3); }
+  .pipeline-step:nth-child(6) .pipeline-dot { background: var(--accent-5); }
+
+  .pipeline-content h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .pipeline-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── FEATURE GRID ─── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(255,107,53,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── THEMES SHOWCASE ─── */
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+
+  .theme-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    pointer-events: none;
+  }
+
+  .theme-swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    border: 3px solid rgba(255,255,255,0.1);
+  }
+
+  .theme-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .theme-card p { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+
+  .t-minimal { background: #1A1A1A; color: #F5F5F5; }
+  .t-minimal .theme-swatch { background: #F5F5F5; border-color: rgba(255,255,255,0.15); }
+  .t-midnight { background: #0F1B2D; color: #C9D6E3; }
+  .t-midnight .theme-swatch { background: #2563EB; }
+  .t-coral { background: #1C1210; color: #F4C2A8; }
+  .t-coral .theme-swatch { background: #FF6B35; }
+  .t-ocean { background: #0A1628; color: #A8D8EA; }
+  .t-ocean .theme-swatch { background: linear-gradient(135deg, #06B6D4, #3B82F6); }
+  .t-gold { background: #1A1814; color: #D4C5A9; }
+  .t-gold .theme-swatch { background: linear-gradient(135deg, #D4A853, #B8860B); }
+
+  /* ─── STATS ROW ─── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding: 4rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 4rem 0;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-number {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent-4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* ─── SOURCE TYPES ─── */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .source-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .source-card:hover { border-color: var(--accent); }
+
+  .source-emoji {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .source-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .source-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-tagline {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .footer-tagline em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .compare { grid-template-columns: 1fr; }
+    .features { grid-template-columns: 1fr 1fr; }
+    .themes-grid { grid-template-columns: repeat(3, 1fr); }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  }
+
+  @media (max-width: 600px) {
+    .features { grid-template-columns: 1fr; }
+    .themes-grid { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .pipeline { padding-left: 2.5rem; }
+    .pipeline-dot { left: -2.5rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="hero">
+  <div class="hero-badge">Claude Skill · v2.0</div>
+  <h1 class="hero-title">
+    Pure <span class="accent">Style</span><br>Slides
+  </h1>
+  <p class="hero-sub">
+    A Claude skill that generates magazine-quality presentations with bold design, cited research, and full speaker scripts. Zero design skills required.
+  </p>
+  <div class="hero-cta">
+    <a href="https://github.com/sayed3ali/pure-style-slides" class="btn btn-primary">View on GitHub</a>
+    <a href="#how-it-works" class="btn btn-outline">How It Works</a>
+  </div>
+  <div class="scroll-hint">↓ scroll</div>
+</section>
+
+<!-- ════════════════════ PROBLEM ════════════════════ -->
+<section>
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">AI slides are<br>instantly recognizable.</h2>
+  <p class="section-desc">
+    And not in a good way. They share the same sins — repetitive layouts, timid palettes, bullet-point overload, missing speaker notes, and that unmistakable "default template" energy. Pure Style Slides exists to fix that.
+  </p>
+
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">Generic AI Slides</div>
+      <div class="compare-item"><span class="dot"></span>Same layout repeated 15 times</div>
+      <div class="compare-item"><span class="dot"></span>Default blue palette</div>
+      <div class="compare-item"><span class="dot"></span>Bullet points everywhere</div>
+      <div class="compare-item"><span class="dot"></span>No visual elements</div>
+      <div class="compare-item"><span class="dot"></span>"Add speaker notes here"</div>
+      <div class="compare-item"><span class="dot"></span>No sources cited</div>
+      <div class="compare-item"><span class="dot"></span>LTR only</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">Pure Style Slides</div>
+      <div class="compare-item"><span class="dot"></span>20 layout patterns, auto-sequenced</div>
+      <div class="compare-item"><span class="dot"></span>5 curated color systems</div>
+      <div class="compare-item"><span class="dot"></span>Stat callouts, cards, charts</div>
+      <div class="compare-item"><span class="dot"></span>1,392 built-in vector icons</div>
+      <div class="compare-item"><span class="dot"></span>Full presenter scripts per slide</div>
+      <div class="compare-item"><span class="dot"></span>Academic + industry research</div>
+      <div class="compare-item"><span class="dot"></span>RTL-aware (Arabic, Hebrew, Persian)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ STATS ════════════════════ -->
+<section>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">20</div>
+      <div class="stat-label">Layout Patterns</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">1,392</div>
+      <div class="stat-label">Vector Icons</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Color Themes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">7</div>
+      <div class="stat-label">Source Types</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ HOW IT WORKS ════════════════════ -->
+<section id="how-it-works">
+  <div class="section-label">Architecture</div>
+  <h2 class="section-title">Six-phase pipeline.</h2>
+  <p class="section-desc">
+    Every deck runs through a structured workflow — from understanding your audience to automated quality checks. No phase is skippable.
+  </p>
+
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="pipeline-dot">0</div>
+      <div class="pipeline-content">
+        <h3>Detect Mode</h3>
+        <p>New deck from scratch, or redesign an existing .pptx? The skill identifies the workflow automatically.</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">1</div>
+      <div class="pipeline-content">
+        <h3>Understand & Research</h3>
+        <p>Parse objective, audience, timing. Then gather real data — academic papers, industry reports, government stats — and build a Source Registry with full citations.</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">2</div>
+      <div class="pipeline-content">
+        <h3>Deck Blueprint</h3>
+        <p>A slide-by-slide outline with layouts, visual direction, source references, and speaker notes. You approve before anything gets built.</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">3</div>
+      <div class="pipeline-content">
+        <h3>Design & Generate</h3>
+        <p>PptxGenJS rendering with theme colors, icon sprites, charts, source footnotes, and full presenter scripts. The layout sequencer ensures no two consecutive slides look the same.</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">4</div>
+      <div class="pipeline-content">
+        <h3>Quality Assurance</h3>
+        <p>Automated checks (contrast ratios, text overflow, slide count, speaker notes) plus visual inspection via PDF-to-image conversion.</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot">5</div>
+      <div class="pipeline-content">
+        <h3>Deliver</h3>
+        <p>Polished .pptx file, optional handout PDF, and a speaker cheat sheet. Pitch decks can generate elevator + full variants from the same content.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FEATURES ════════════════════ -->
+<section>
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Everything a great deck needs.</h2>
+  <p class="section-desc">
+    Not a template library — a complete design system that thinks about typography, data, sources, accessibility, and narrative structure.
+  </p>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(255,107,53,0.12); color:var(--accent);">📐</div>
+      <h3>Layout Sequencer</h3>
+      <p>Programmatic layout variety. Alternates visual weight, prevents repeats, enforces the dark-light-dark sandwich structure.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(59,130,246,0.12); color:var(--accent-2);">📊</div>
+      <h3>Data Visualization</h3>
+      <p>Seven data-specific layouts (D1–D7), theme-matched chart styling, and insight-driven titles. Charts tell stories, not just show numbers.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(16,185,129,0.12); color:var(--accent-3);">🔬</div>
+      <h3>Research Engine</h3>
+      <p>Gathers academic papers, industry reports, government data. Builds a Source Registry that flows into footnotes, notes, and a References slide.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(245,158,11,0.12); color:var(--accent-4);">🎯</div>
+      <h3>1,392 Vector Icons</h3>
+      <p>Eight categories with dark + white variants. Fast keyword lookup for instant topic-to-icon resolution from sprite sheets.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(139,92,246,0.12); color:var(--accent-5);">🎤</div>
+      <h3>Speaker Scripts</h3>
+      <p>Every slide gets a full presenter script with talking points, transition hooks, source details, and anticipated Q&A prep.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(236,72,153,0.12); color:#EC4899;">🌍</div>
+      <h3>RTL Support</h3>
+      <p>Full Arabic, Hebrew, Persian support. Automatic layout mirroring, RTL-safe fonts, and bidirectional content handling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ THEMES ════════════════════ -->
+<section>
+  <div class="section-label">Themes</div>
+  <h2 class="section-title">Five curated palettes.</h2>
+  <p class="section-desc">
+    Each theme is a complete color system with font pairings, optimized for specific contexts. You pick one — the skill applies it everywhere.
+  </p>
+
+  <div class="themes-grid">
+    <div class="theme-card t-minimal">
+      <div class="theme-swatch"></div>
+      <h4>Pure Minimal</h4>
+      <p>Swiss, ultra-clean. Board rooms & keynotes.</p>
+    </div>
+    <div class="theme-card t-midnight">
+      <div class="theme-swatch"></div>
+      <h4>Midnight Executive</h4>
+      <p>Authoritative & premium. Finance & consulting.</p>
+    </div>
+    <div class="theme-card t-coral">
+      <div class="theme-swatch"></div>
+      <h4>Coral Energy</h4>
+      <p>Warm & dynamic. Marketing & events.</p>
+    </div>
+    <div class="theme-card t-ocean">
+      <div class="theme-swatch"></div>
+      <h4>Ocean Gradient</h4>
+      <p>Trustworthy & deep. Tech & enterprise.</p>
+    </div>
+    <div class="theme-card t-gold">
+      <div class="theme-swatch"></div>
+      <h4>Slate & Gold</h4>
+      <p>Premium & luxurious. Investment & real estate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ RESEARCH ════════════════════ -->
+<section>
+  <div class="section-label">Research Sources</div>
+  <h2 class="section-title">Data you can cite.</h2>
+  <p class="section-desc">
+    The skill doesn't just arrange text — it researches your topic and builds a Source Registry with full citations that flow through the entire deck.
+  </p>
+
+  <div class="sources-grid">
+    <div class="source-card">
+      <div class="source-emoji">🎓</div>
+      <div>
+        <h4>Academic Papers</h4>
+        <p>Google Scholar, arXiv, PubMed. Peer-reviewed findings for scientific and technical claims.</p>
+      </div>
+    </div>
+    <div class="source-card">
+      <div class="source-emoji">📈</div>
+      <div>
+        <h4>Industry Reports</h4>
+        <p>McKinsey, Gartner, Statista, Deloitte. Market sizing, trends, and forecasts.</p>
+      </div>
+    </div>
+    <div class="source-card">
+      <div class="source-emoji">🏛️</div>
+      <div>
+        <h4>Government & Institutional</h4>
+        <p>WHO, World Bank, OECD, .gov sites. Policy, regulation, and demographic data.</p>
+      </div>
+    </div>
+    <div class="source-card">
+      <div class="source-emoji">📰</div>
+      <div>
+        <h4>News & Journalism</h4>
+        <p>Reuters, Bloomberg, AP. Current events, earnings, and executive quotes.</p>
+      </div>
+    </div>
+    <div class="source-card">
+      <div class="source-emoji">🏢</div>
+      <div>
+        <h4>Company Sources</h4>
+        <p>SEC filings, press releases, investor decks. Primary financials and product data.</p>
+      </div>
+    </div>
+    <div class="source-card">
+      <div class="source-emoji">⚙️</div>
+      <div>
+        <h4>Technical Documentation</h4>
+        <p>GitHub, RFCs, official docs. Architecture, standards, and engineering references.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+  <div class="footer-tagline">Stop making slides. Start <em>designing decks</em>.</div>
+  <p>
+    Built for <a href="https://claude.ai">Claude</a> · Powered by <a href="https://gitbrent.github.io/PptxGenJS/">PptxGenJS</a> · <a href="https://github.com/sayed3ali/pure-style-slides">GitHub</a>
+  </p>
+</footer>
+
+</body>
+</html>
