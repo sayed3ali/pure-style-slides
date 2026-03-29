@@ -83,8 +83,8 @@ GRADE_NEUTRAL: 888888  (gray — ungraded, baseline)
 
 | Element | Size | Weight | Tracking | Color |
 |---------|------|--------|----------|-------|
-| Slide title | 44pt | Bold | Normal | 1A1A1A |
-| Category label (above title) | 12pt | Bold | charSpacing: 4 | 888888 |
+| Slide title | 28-32pt | Bold | Normal | 1A1A1A |
+| Category label (above title) | 11pt | Bold | charSpacing: 4 | 888888 |
 | Subtitle / header | 24pt | Normal | Normal | 333333 |
 | Section header (in-card) | 20pt | Bold | Normal | 1A1A1A |
 | Body text | 16pt | Normal | Normal | 333333 |
@@ -94,6 +94,38 @@ GRADE_NEUTRAL: 888888  (gray — ungraded, baseline)
 | Card stat number | 48-60pt | Bold | Normal | Accent or 1A1A1A |
 | Metric value (in rows) | 28-36pt | Bold | Normal | 1A1A1A |
 | Badge text | 14pt | Bold | Normal | FFFFFF |
+
+### Title / Category Label Positioning (Anti-Overlap)
+
+**CRITICAL**: Category labels and slide titles overlap when positioned too close. Use these exact positions:
+
+```javascript
+// Category label — small caps above the title
+function addCategoryLabel(slide, text, y = 0.35) {
+  slide.addText(text.toUpperCase(), {
+    x: 0.7, y, w: 8.6, h: 0.25,
+    fontSize: 11, fontFace: HEADER_FONT, color: '888888',
+    bold: true, charSpacing: 4, align: 'left', valign: 'top',
+  });
+}
+
+// Slide title — below category label with breathing room
+function addSlideTitle(slide, text, y = 0.65) {
+  slide.addText(text, {
+    x: 0.7, y, w: 8.6, h: 0.7,
+    fontSize: 28, fontFace: HEADER_FONT, color: '1A1A1A',
+    bold: true, align: 'left', valign: 'top',
+  });
+}
+```
+
+**Key spacing rules:**
+- Category label: y=0.35, h=0.25 → bottom at y=0.60
+- Title: y=0.65, h=0.70 → bottom at y=1.35
+- Gap between label bottom and title top: **0.05"** (minimum)
+- First content element: y≥1.45 → **0.10" gap** below title bottom
+- Slide title max size: **28-32pt** (44pt causes overflow on long titles)
+- Never use `fontSize: 44` for slide titles unless the title is ≤3 words
 
 ### Typography Rules
 

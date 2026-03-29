@@ -487,3 +487,45 @@ const makeTextStyle = (fontSize, color, bold = false) => ({
 slide.addShape(pres.shapes.RECTANGLE, { ..., shadow: makeCardShadow() });
 slide.addShape(pres.shapes.RECTANGLE, { ..., shadow: makeCardShadow() });
 ```
+
+---
+
+## Slide Setup & Layout Initialization
+
+**CRITICAL**: Getting the layout wrong causes all positioning to break. The Pure Minimal grid (margins, content zones, card positions) assumes a **10" × 5.625"** canvas. You MUST use the correct layout.
+
+### Correct Setup
+
+```javascript
+const pres = new PptxGenJS();
+
+// Option A: Use the built-in 16:9 layout (10" × 5.625") — PREFERRED
+pres.layout = 'LAYOUT_16x9';
+
+// Option B: Define a custom layout (use `width` and `height`, NOT `w` and `h`)
+pres.defineLayout({ name: 'CUSTOM_10x5.625', width: 10, height: 5.625 });
+pres.layout = 'CUSTOM_10x5.625';
+```
+
+### Common Mistakes
+
+```javascript
+// ❌ WRONG — LAYOUT_WIDE is 13.33" × 7.5", breaks all Pure Minimal positioning
+pres.layout = 'LAYOUT_WIDE';
+
+// ❌ WRONG — defineLayout requires `width` and `height`, not `w` and `h`
+pres.defineLayout({ name: 'CUSTOM', w: 10, h: 5.625 });
+// This silently fails: "defineLayout requires `width`" warning, falls back to default
+
+// ✅ CORRECT — use `width` and `height`
+pres.defineLayout({ name: 'CUSTOM', width: 10, height: 5.625 });
+```
+
+### Layout Reference
+
+| Layout Name | Width | Height | Notes |
+|-------------|-------|--------|-------|
+| `LAYOUT_16x9` | 10" | 5.625" | **Use this for Pure Minimal** — matches all grid specs |
+| `LAYOUT_16x10` | 10" | 6.25" | Taller variant — requires adjusted Y positions |
+| `LAYOUT_4x3` | 10" | 7.5" | Legacy format |
+| `LAYOUT_WIDE` | 13.33" | 7.5" | **Never use for Pure Minimal** — all X/W positions will be wrong |

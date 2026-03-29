@@ -11,6 +11,42 @@ A complete guide to creating professional, theme-matched data visualizations in 
 3. **Theme-matched colors** — never use PptxGenJS defaults; always pass `chartColors` from your theme
 4. **Consistent styling** — every chart in a deck should share the same axis style, font, and grid treatment
 5. **Pair with context** — a chart alone is forgettable; pair it with a stat callout, insight box, or annotation
+6. **Every analysis slide MUST include a written insight** — non-negotiable. Charts show evidence; insights tell the audience what to think. Add an insight card, annotation box, or callout text on every slide that contains a chart. The insight should state the "so what?" — not just describe the chart but explain what it means for the business. Use `makeCard()` with accent-left bar or a muted-fill panel.
+
+### Mandatory Insight Annotation Pattern
+
+Every slide with charts or data visualizations MUST include at least one visible insight annotation. Use one of these patterns:
+
+```javascript
+// Pattern A: Insight card with accent-left bar (preferred for Pure Minimal)
+makeCard(slide, pres, x, y, w, h, { fill: 'F5F5F5', accentSide: 'left', accentColor: ACCENT });
+slide.addText('KEY INSIGHT', {
+  x: x + 0.2, y: y + 0.08, w: w - 0.4, h: 0.25,
+  fontSize: 10, fontFace: HEADER_FONT, color: '888888',
+  bold: true, charSpacing: 3,
+});
+slide.addText('Your insight text here — the "so what?" of the chart.', {
+  x: x + 0.2, y: y + 0.35, w: w - 0.4, h: h - 0.5,
+  fontSize: 11, fontFace: BODY_FONT, color: '333333',
+  align: 'left', valign: 'top', lineSpacingMultiple: 1.3,
+});
+
+// Pattern B: Inline insight below chart title (compact)
+slide.addText('→  Beverages drive 77% of revenue but only 71% of profit — Food margin needs attention.', {
+  x: chartX, y: chartY + chartH + 0.1, w: chartW, h: 0.35,
+  fontSize: 11, fontFace: BODY_FONT, color: ACCENT,
+  italic: true, align: 'left',
+});
+
+// Pattern C: Stat callout cards alongside chart (for multi-metric slides)
+// See KPI Card Row and Strategy Dashboard layouts for patterns
+```
+
+**Rules for insight text:**
+- State what the data MEANS, not what it SHOWS ("Coffee margins outpace Hot Chocolate 3:1" not "Coffee margin is 80%")
+- Maximum 2 sentences per insight card
+- Use accent color or italic to visually distinguish insights from data labels
+- Position insights adjacent to the chart they annotate — not at the bottom of the slide as an afterthought
 
 ---
 

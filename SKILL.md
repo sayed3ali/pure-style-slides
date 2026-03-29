@@ -312,9 +312,29 @@ Also read these references from this skill's directory:
 - **Theme library**: `references/themes.md` — color palettes and font pairings
 - **Icon library**: `references/icons.md` — 1,392 built-in vector icons, usage patterns, topic mapping
 - **Icon keyword lookup**: `references/icon-keywords.json` — fast topic→icon resolution (load with `findIcons()` from code-helpers)
-- **Data visualization**: `references/data-visualization.md` — chart recipes, D1–D7 layouts, stat callouts, theme styling
-- **Code helpers**: `references/code-helpers.md` — layout sequencer, icon keyword lookup, RTL helpers, QA automation, handout generator, option object safety
+- **Data visualization**: `references/data-visualization.md` — chart recipes, D1–D7 layouts, stat callouts, theme styling, **mandatory insight annotations**
+- **Code helpers**: `references/code-helpers.md` — layout sequencer, icon keyword lookup, RTL helpers, QA automation, handout generator, option object safety, **slide setup & defineLayout**
 - **RTL guide** (if RTL content detected): `references/rtl-guide.md` — layout mirroring, font selection, bidirectional content
+
+#### Slide Setup (CRITICAL — Do First)
+
+Before adding any slides, initialize the presentation with the correct layout. Pure Minimal's grid (margins at 0.7", content width 8.6", etc.) assumes a **10" × 5.625"** canvas:
+
+```javascript
+const pres = new PptxGenJS();
+pres.layout = 'LAYOUT_16x9';  // 10" × 5.625" — matches Pure Minimal grid
+```
+
+**Never use `LAYOUT_WIDE`** (13.33" × 7.5") — it breaks all positioning. If using `defineLayout()`, use `width` and `height` (not `w` and `h`):
+
+```javascript
+// ✅ CORRECT
+pres.defineLayout({ name: 'MY_LAYOUT', width: 10, height: 5.625 });
+// ❌ WRONG — silently fails
+pres.defineLayout({ name: 'MY_LAYOUT', w: 10, h: 5.625 });
+```
+
+See `references/code-helpers.md` → "Slide Setup & Layout Initialization" for the full reference.
 
 #### Design Principles
 
@@ -325,11 +345,13 @@ Also read these references from this skill's directory:
 3. **The "sandwich" structure** — dark background for title + closing slides, lighter backgrounds for content slides. Creates visual bookends.
 
 4. **Visual hierarchy** on every slide:
-   - Title (H1): 36-44pt, bold, header font
+   - Category label: 11pt, bold, ALL CAPS, charSpacing: 4, color: 888888 → y=0.35
+   - Title (H1): 28-32pt, bold, header font → y=0.65 (0.05" below category label)
    - Key Message (H2): 20-24pt, bold
    - Supporting Details (body): 14-16pt, body font
    - Stat callouts: 48-72pt, bold, accent color
    - Captions / sources: 10-12pt, muted color
+   - **Anti-overlap rule**: First content element must start at y≥1.45 (0.10" below title bottom). See `references/pure-minimal.md` → "Title / Category Label Positioning" for exact helper functions.
 
 5. **Every slide needs a visual element** — non-negotiable. Options:
    - Icon in colored circle (prefer built-in vector icons; fall back to react-icons → sharp → PNG pipeline)
@@ -358,6 +380,8 @@ Also read these references from this skill's directory:
    - Single key stats → large number callouts (60-72pt) with trend indicators instead of charts
    - Use data-specific layouts D1–D7 from the data visualization reference
    - Chart titles should state the insight ("Revenue Grew 58%"), not just label the data ("Quarterly Revenue")
+   - **MANDATORY: Every analysis/data slide must include a visible written insight** — a card, callout, or annotation that states the "so what?" of the chart. Charts show evidence; insight text tells the audience what it means. Use `makeCard()` with accent-left bar or italic text below the chart. See `references/data-visualization.md` → "Mandatory Insight Annotation Pattern" for code recipes.
+   - For doughnut/pie charts, use `showPercent: true` (valid PptxGenJS property) to display percentage labels on segments
 
 8. **Shapes for structure** — colored rectangles and overlays create:
    - Card layouts (white cards with shadow on colored backgrounds)
