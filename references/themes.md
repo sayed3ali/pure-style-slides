@@ -109,7 +109,7 @@ TEXT_MUTED:  7F8C8D  (muted slate)
 
 ## 5. Orange
 
-Bold and warm — investor-grade confidence with MENA identity. Inspired by talabat's IR presentation system. Warm cream backgrounds replace cold grays, chocolate brown anchors the text, and vivid orange drives energy. Optimized for financial data visualization with stacked bar charts, KPI card rows, and guidance tracker tables.
+Bold and warm — investor-grade confidence with MENA identity. Warm cream backgrounds replace cold grays, chocolate brown anchors the text, and vivid orange drives energy. Optimized for financial data visualization with stacked bar charts, KPI card rows, and guidance tracker tables.
 
 ```
 PRIMARY:    FF5722  (vivid orange)

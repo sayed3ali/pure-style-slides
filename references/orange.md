@@ -1,12 +1,12 @@
-# Orange Theme — talabat-Inspired Corporate IR Design System
+# Orange Theme — Warm Corporate IR Design System
 
-A bold, warm, investor-grade theme inspired by the talabat Holding plc presentation system. Designed for earnings calls, investor presentations, capital markets days, and corporate IR decks. Combines vibrant orange energy with warm cream backgrounds, deep chocolate text, and a structured multi-card layout system optimized for financial data visualization.
+A bold, warm, investor-grade theme designed for earnings calls, corporate IR decks, capital markets days, and growth-oriented presentations. Combines vibrant orange energy with warm cream backgrounds, deep chocolate text, and a structured multi-card layout system optimized for financial data visualization.
 
 ---
 
 ## Origin & Design DNA
 
-Extracted from three talabat investor presentations (Capital Markets Day Oct 2024, Q4/FY24 Earnings Feb 2025, Investor Presentation Feb 2025). The system uses a distinctive warm-on-warm palette: vivid orange for energy and brand confidence, warm cream/sand backgrounds for approachability, and deep chocolate brown for anchoring text — a deliberate departure from the typical cold blue/navy IR deck.
+Inspired by top-tier MENA on-demand platform IR design language. The system uses a distinctive warm-on-warm palette: vivid orange for energy and brand confidence, warm cream/sand backgrounds for approachability, and deep chocolate brown for anchoring text — a deliberate departure from the typical cold blue/navy IR deck.
 
 ---
 
@@ -15,7 +15,7 @@ Extracted from three talabat investor presentations (Capital Markets Day Oct 202
 ### Primary Palette
 
 ```
-PRIMARY:       FF5722   (talabat orange — hero backgrounds, section dividers, accent bars)
+PRIMARY:       FF5722   (vivid orange — hero backgrounds, section dividers, accent bars)
 SECONDARY:     3D1F00   (chocolate brown — headings, badges, dark accents, number labels)
 ACCENT:        7AB648   (leaf green — positive indicators, checkmarks, growth arrows)
 BG_WARM:       F5EDE3   (warm cream — default slide background, the "paper" feel)
@@ -109,7 +109,7 @@ Logo: top-left on orange zone (white variant)
 
 ### Layout 2: Section Divider → "Orange Curtain"
 
-**Structure**: Full-bleed FF5722 background. Section title in 56-72pt Extra Bold FFFFFF, left-aligned at vertical center. Logo badge in top-right corner (white, slightly tilted per talabat style). No other elements.
+**Structure**: Full-bleed FF5722 background. Section title in 56-72pt Extra Bold FFFFFF, left-aligned at vertical center. Logo badge in top-right corner (white, slightly tilted for brand personality). No other elements.
 
 ```
 Background: FF5722 (solid orange)
@@ -621,7 +621,7 @@ function addCheckBadge(slide, pres, x, y) {
 ### Stacked Bar Chart (Revenue Breakdown)
 
 ```javascript
-// Revenue breakdown stacked bar — talabat-style
+// Revenue breakdown stacked bar
 const revenueData = [
   { name: 'Commission fees',           labels: years, values: commissionData },
   { name: 'Subscription & Other',      labels: years, values: subscriptionData },

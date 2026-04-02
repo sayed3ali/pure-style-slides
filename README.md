@@ -1,115 +1,341 @@
-# pure-style-slides
+<div align="center">
 
-**PptxGenJS presentation skill for Claude — 20 layouts, 6 themes (incl. Orange IR theme), 1,392 vector icons, token-optimized layered loading (63–76% reduction)**
+<!-- HERO -->
+<br>
 
-Create designer-quality PowerPoint presentations that look like a creative agency built them. Every deck has visual variety, bold typography, color confidence, breathing room, data-as-design, icon-driven storytelling, and comprehensive speaker notes.
+```
+ ┌─────────────────────────────────────────────────────────────┐
+ │                                                             │
+ │    ██████╗ ██╗   ██╗██████╗ ███████╗                       │
+ │    ██╔══██╗██║   ██║██╔══██╗██╔════╝                       │
+ │    ██████╔╝██║   ██║██████╔╝█████╗                         │
+ │    ██╔═══╝ ██║   ██║██╔══██╗██╔══╝                         │
+ │    ██║     ╚██████╔╝██║  ██║███████╗                       │
+ │    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝                       │
+ │              S T Y L E   S L I D E S                        │
+ │                                                             │
+ │    Presentations that look like a creative agency built them │
+ │                                                             │
+ └─────────────────────────────────────────────────────────────┘
+```
+
+<br>
+
+**A Claude skill that generates magazine-quality `.pptx` presentations**
+**with bold design, real data, and zero design skills required.**
+
+<br>
+
+[`SKILL.md`](./SKILL.md) · [`Layouts`](./references/layouts-compact.md) · [`Themes`](./references/themes.md) · [`Icons`](./references/icons.md) · [`Charts`](./references/charts.md)
+
+<br>
 
 ---
+
+<br>
+
+</div>
+
+## The Problem
+
+AI-generated slides are **instantly recognizable** — and not in a good way. They share the same sins: repetitive layouts, timid colors, bullet-point overload, missing speaker notes, and that unmistakable "default template" energy.
+
+**Pure Style Slides** exists to fix that. It's a skill for [Claude](https://claude.ai) that treats every slide as a designed artifact, not a text container.
+
+<br>
+
+## What Makes It Different
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                                                                  │
+│   GENERIC AI SLIDES              PURE STYLE SLIDES               │
+│                                                                  │
+│   • Same layout, 15 times        20 layout patterns, sequenced  │
+│   • Default blue palette          6 curated color systems        │
+│   • Bullet points everywhere      Stat callouts, cards, charts   │
+│   • No visual elements            1,392 built-in vector icons    │
+│   • "Add speaker notes here"      Full presenter scripts         │
+│   • LTR only                      RTL-aware (Arabic, Hebrew)     │
+│   • No sources cited               Academic + industry research   │
+│   • One size fits all              7 presentation archetypes     │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+<br>
+
+## Architecture
+
+The skill runs a **6-phase pipeline** — each phase builds on the last:
+
+```
+                ┌─────────────┐
+                │  User Input │
+                └──────┬──────┘
+                       │
+                       ▼
+        ┌──────────────────────────────┐
+   0    │     DETECT MODE              │   New deck? Redesign?
+        └──────────────┬───────────────┘
+                       │
+                       ▼
+        ┌──────────────────────────────┐
+   1    │  UNDERSTAND & RESEARCH       │   Parse request, detect type,
+        │                              │   gather sources, build
+        │  Academic · Industry · Gov   │   Source Registry [S1] [S2]...
+        │  News · Company · Technical  │
+        └──────────────┬───────────────┘
+                       │
+                       ▼
+        ┌──────────────────────────────┐
+   2    │  DECK BLUEPRINT              │   Slide-by-slide outline with
+        │                              │   layouts, visuals, sources,
+        │  "Here's the plan —          │   speaker notes
+        │   approve before I build"    │
+        └──────────────┬───────────────┘
+                       │  ← user approval
+                       ▼
+        ┌──────────────────────────────┐
+   3    │  DESIGN & GENERATE           │   PptxGenJS rendering with
+        │                              │   theme colors, icon sprites,
+        │  Layouts · Icons · Charts    │   charts, footnotes
+        │  Footnotes · Speaker Notes   │
+        └──────────────┬───────────────┘
+                       │
+                       ▼
+        ┌──────────────────────────────┐
+   4    │  QA                          │   Automated checks + visual
+        │                              │   inspection (PDF → images)
+        │  Contrast · Overflow ·       │
+        │  Notes · Count · Render      │
+        └──────────────┬───────────────┘
+                       │
+                       ▼
+        ┌──────────────────────────────┐
+   5    │  DELIVER                     │   .pptx + optional handout PDF
+        │                              │   + speaker cheat sheet
+        └──────────────────────────────┘
+```
+
+<br>
 
 ## Features
 
-- **20 layout patterns** — Title Hero, Section Divider, Two-Column Split, Icon Row, Stat Callout, Card Grid, Timeline, Chart + Insight, Quote, Image + Overlay, Table, Closing/CTA, Agenda, Before/After, Multi-Period Table, KPI Card Row, Strategy Dashboard, Product Feature, Bold Section Divider, PoP Bar Comparison
-- **6 themes** — Pure Minimal (Swiss), Midnight Executive (corporate), Coral Energy (marketing), Ocean Gradient (tech), Slate & Gold (luxury), **Orange** (investor IR / earnings)
-- **1,392 built-in vector icons** — 8 categories (general, arrow, business, interface, buildings, user, other, brand) in dark + white variants
-- **Token-optimized** — layered file loading reads only what's needed per phase (63–76% reduction vs monolithic approach)
-- **RTL support** — automatic Arabic/Hebrew/Persian layout mirroring
-- **Data visualization** — bar, line, pie, doughnut, area, scatter charts with theme-matched styling
-- **Speaker notes** — comprehensive presenter scripts on every slide
-- **QA automation** — slide count, notes presence, text overflow, contrast checks
+### 🎨 6 Curated Themes
 
----
+| Theme | Mood | Best For |
+|-------|------|----------|
+| **Pure Minimal** | Swiss, ultra-clean | C-suite, board, investor pitch, keynotes |
+| **Midnight Executive** | Authoritative, premium | Finance, consulting, corporate |
+| **Coral Energy** | Warm, dynamic | Marketing, events, consumer brands, startups |
+| **Ocean Gradient** | Trustworthy, deep | Technology, SaaS, enterprise, healthcare |
+| **Slate & Gold** | Premium, luxurious | Investment, real estate, awards, luxury |
+| **Orange** | Bold, warm, growth | Earnings calls, corporate IR, MENA corporate |
 
-## File Map
+### 📐 20 Layout Patterns
+
+No two consecutive slides share the same layout. The built-in sequencer enforces variety by alternating visual weight (heavy → medium → light), preventing repeats, and ensuring the "sandwich" structure (dark bookends, lighter content).
+
+<details>
+<summary><b>View all 20 layouts</b></summary>
+
+| # | Layout | Weight | Best For |
+|---|--------|--------|----------|
+| 1 | Title Hero | Heavy | Opening slide |
+| 2 | Section Divider | Medium | Topic transitions |
+| 3 | Two-Column Split | Medium | Content, comparisons |
+| 4 | Icon Row | Medium | Feature lists, processes |
+| 5 | Stat Callout | Heavy | Key metrics |
+| 6 | Card Grid | Medium | Multi-point content |
+| 7 | Timeline / Process | Medium | Sequential content |
+| 8 | Chart + Insight | Medium | Data with narrative |
+| 9 | Quote | Light | Testimonials, key quotes |
+| 10 | Image + Overlay | Heavy | Visual storytelling |
+| 11 | Table Slide | Light | Structured data, comparisons |
+| 12 | Closing / CTA | Heavy | Final slide |
+| 13 | Agenda / Overview | Light | Table of contents |
+| 14 | Before / After | Medium | Transformations |
+| 15 | Multi-Period Table | Medium | Financial data |
+| 16 | KPI Card Row | Heavy | Dashboard metrics |
+| 17 | Strategy Dashboard | Heavy | Strategic overviews |
+| 18 | Product Feature Showcase | Medium | Product demos |
+| 19 | Bold Section Divider | Heavy | Major transitions |
+| 20 | Period-over-Period Bars | Medium | Growth comparisons |
+
+</details>
+
+### 🔬 Research-Backed Content
+
+The skill doesn't just arrange text — it **researches your topic** and cites real sources.
+
+```
+SOURCE TYPES SUPPORTED
+──────────────────────────────────────
+  Academic Papers    → Google Scholar, arXiv, PubMed
+  Industry Reports   → McKinsey, Gartner, Statista, Deloitte
+  Government Data    → .gov, WHO, World Bank, OECD
+  News & Journalism  → Reuters, Bloomberg, AP
+  Company Sources    → SEC filings, press releases, investor decks
+  Technical Docs     → GitHub, RFCs, official documentation
+  User Uploads       → Your PDFs, docs, spreadsheets
+```
+
+Sources are tracked in a **Source Registry** (`[S1]`, `[S2]`...) that flows through to on-slide footnotes, speaker notes, and a dedicated References slide.
+
+### 🎯 1,392 Built-in Vector Icons
+
+Eight categories of professional icons in dark + white variants, extracted from sprite sheets at runtime:
+
+| Category | Count | What's Inside |
+|----------|-------|---------------|
+| General | 137 | Chat, devices, media, connectivity, code |
+| Arrow | 58 | Directional, navigation, chevrons |
+| Business | 138 | Charts, mail, documents, finance |
+| Interface | 255 | Checkmarks, toggles, search, lock, cloud |
+| Buildings | 38 | Houses, offices, churches, airports |
+| User | 118 | Emoji faces, hand gestures |
+| Other | 246 | Weather, animals, vehicles, food, nature |
+| Brand | 402 | Company logos |
+
+Fast keyword lookup: `findAndGetIcon('revenue')` → best matching icon as base64 PNG.
+
+### 📊 Data Visualization
+
+Theme-matched chart styling via `makeChartStyle()` factory. Supports bar, line, pie, doughnut, area, and scatter charts. Chart titles state insights ("Revenue Grew 58%"), not labels ("Quarterly Revenue").
+
+### 🌍 RTL Support
+
+Full Arabic, Hebrew, Persian, and Urdu support with automatic layout mirroring, RTL-safe font selection (Tahoma + Arial), and bidirectional content handling.
+
+### 🎤 Speaker Notes
+
+Every slide gets a full presenter script — not "add notes here" placeholders. Notes include talking points, transition hooks, source details, and Q&A prep.
+
+### ⚡ Token-Optimized Loading
+
+Layered file loading reads only what's needed per phase — **63–76% fewer tokens** vs monolithic approaches:
+
+| Scenario | Tokens Used | Reduction |
+|----------|-------------|-----------|
+| Magazine deck (no charts) | ~10K | 76% |
+| Magazine deck (with charts) | ~11K | 73% |
+| Orange theme deck | ~18K | 63% |
+| Pure Minimal deck | ~16K | 65% |
+
+<br>
+
+## Project Structure
 
 ```
 pure-style-slides/
 ├── SKILL.md                          # Main skill — workflow, theme menu, loading protocol
 ├── references/
-│   ├── layouts-compact.md            # 20 layout patterns (compact, code-focused)
-│   ├── themes.md                     # Magazine themes 1–5 + Orange color specs
-│   ├── orange.md                     # Orange theme full design system (IR/earnings)
-│   ├── pure-minimal.md               # Pure Minimal style overrides (Swiss design)
-│   ├── charts.md                     # Chart recipes — makeChartStyle + all chart types
-│   ├── qa-helpers.md                 # QA checks, sequencer, RTL helpers, handout gen
-│   ├── icons.md                      # Icon catalog documentation
-│   ├── icon-keywords.json            # Fast topic→icon keyword lookup
-│   └── rtl-guide.md                  # Arabic/Hebrew/RTL layout guide
-└── icons/
-    ├── manifest.json                 # Icon index (category, position, name)
-    ├── {category}_sprite.png         # Dark icon sprite sheets
-    └── {category}_white_sprite.png   # White icon sprite sheets
+│   ├── layouts-compact.md            # 20 slide layout patterns (compact)
+│   ├── themes.md                     # 5 Magazine themes + Orange color specs
+│   ├── orange.md                     # Orange theme full design system (corporate IR)
+│   ├── pure-minimal.md               # Swiss-style design overrides
+│   ├── charts.md                     # Chart recipes + makeChartStyle factory
+│   ├── qa-helpers.md                 # Layout sequencer, QA checks, handout gen
+│   ├── icons.md                      # Full icon catalog + usage guide
+│   ├── icon-keywords.json            # Fast topic → icon keyword index
+│   └── rtl-guide.md                  # Arabic/Hebrew layout mirroring
+├── icons/
+│   ├── manifest.json                 # Icon metadata (positions, sizes)
+│   ├── {category}_sprite.png         # Dark icon sprite sheets (×8)
+│   └── {category}_white_sprite.png   # White icon sprite sheets (×8)
+└── README.md
 ```
 
----
-
-## Token-Optimized Loading Protocol
-
-The skill uses **layered loading** — files are read per phase, not all upfront:
-
-| Phase | Files Read | Tokens | When |
-|-------|-----------|--------|------|
-| 1 — Parse | `SKILL.md` only | ~2,000 | Always |
-| 2 — Theme | `layouts-compact.md` + theme file | ~3,400–7,900 | After user picks theme |
-| 3 — Generate | `charts.md` + `icon-keywords.json` | ~4,200 | Only if deck has charts |
-| 4 — QA | `qa-helpers.md` | ~1,550 | After .pptx is built |
-
-### Savings vs previous monolithic approach
-
-| Scenario | Before | After | Reduction |
-|----------|--------|-------|-----------|
-| Magazine (no charts) | 41K | 10K | **76%** |
-| Magazine (with charts) | 41K | 11K | **73%** |
-| Orange theme | 48K | 18K | **63%** |
-| Pure Minimal | 46K | 16K | **65%** |
-
----
-
-## Themes
-
-| # | Theme | Mood | Best For |
-|---|-------|------|---------|
-| 1 | Pure Minimal | Swiss, ultra-clean | C-suite, board, investor pitch, keynotes |
-| 2 | Midnight Executive | Authoritative, premium | Finance, consulting, corporate |
-| 3 | Coral Energy | Warm, dynamic | Marketing, events, consumer brands, startups |
-| 4 | Ocean Gradient | Trustworthy, deep | Technology, SaaS, enterprise, healthcare |
-| 5 | Slate & Gold | Premium, luxurious | Investment, real estate, awards, luxury |
-| 6 | Orange | Bold, warm, growth | Earnings calls, investor IR, MENA corporate |
-
-### Orange Theme
-
-Extracted from talabat Holding plc investor presentations (Capital Markets Day, Q4/FY24 Earnings, Investor Presentation). Features warm cream backgrounds (F5EDE3), vivid orange accents (FF5722), chocolate brown text (3D1F00), and leaf green growth indicators (7AB648). Includes IR-specific patterns: KPI card rows, dual chart dashboards, guidance tracker tables, growth pill badges, and stacked revenue bar charts.
-
----
-
-## Dependencies
-
-```bash
-npm install -g pptxgenjs
-npm install -g react-icons react react-dom sharp  # optional icon fallback
-pip install "markitdown[pptx]"                     # QA text extraction
-# LibreOffice + Poppler for PDF visual QA
-```
-
----
+<br>
 
 ## Usage
 
-This is a **Claude skill** — install it in Claude's skill directory and it triggers automatically when you ask for slides, presentations, decks, or pitches.
+This is a **Claude skill** — it runs inside [Claude.ai](https://claude.ai) projects with computer use enabled.
+
+### Quick Start
+
+1. Create a new Claude project
+2. Upload the `pure-style-slides/` folder as a skill
+3. Ask Claude to make a presentation:
 
 ```
-"Create a 10-slide investor presentation about our Q3 results using the Orange theme"
-"Make me a pitch deck for a SaaS startup"
-"Redesign this uploaded .pptx with the Pure Minimal theme"
+"Create a pitch deck about our AI-powered logistics platform.
+ We're targeting Series A investors."
 ```
 
----
+Claude will:
+- Detect this as a **Pitch Deck** → suggest the Problem → Solution → Market → Traction → Team → Ask arc
+- Ask you to **pick a theme** from the 6 options
+- **Research** the logistics/AI market for real data points
+- Present a **Deck Blueprint** for your approval
+- Generate a polished `.pptx` with varied layouts, icons, charts, and full speaker notes
+- Run **QA checks** and deliver the final file
 
-## Author
+### Supported Presentation Types
 
-**Sayed Ali** — Financial Analyst & Python Instructor
+| Type | Typical Length |
+|------|---------------|
+| Pitch Deck | 10–15 slides (or 3–5 elevator variant) |
+| Quarterly Review | 12–20 slides |
+| Training / Educational | 15–30 slides |
+| Status Update | 5–10 slides |
+| Thought Leadership | 8–12 slides |
+| Product Overview | 8–12 slides |
+| Conference Talk | 15–25 slides |
 
----
+<br>
+
+## Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| `pptxgenjs` | Slide generation |
+| `sharp` | Icon sprite extraction |
+| `markitdown` | Text extraction for QA |
+| LibreOffice | PDF conversion for visual QA |
+| Poppler (`pdftoppm`) | PDF → image for visual inspection |
+
+<br>
+
+## Design Philosophy
+
+> *The difference between forgettable slides and memorable ones is **design intelligence**: understanding that a presentation is a visual story, not a text dump.*
+
+This skill is opinionated. It believes:
+
+- **Variety is non-negotiable** — layout repetition kills engagement
+- **Color requires commitment** — pick a palette and own it
+- **Data belongs on slides** — real stats beat generic claims
+- **Whitespace is a feature** — breathing room > bullet density
+- **Speaker notes are first-class** — the deck is incomplete without them
+- **Sources build trust** — cited data beats "according to industry reports"
+
+<br>
+
+## Contributing
+
+This skill is actively maintained. To contribute:
+
+1. Fork the repository
+2. Make changes to `SKILL.md` or the reference files
+3. Test by uploading to a Claude project and generating presentations
+4. Submit a PR with before/after examples
+
+<br>
 
 ## License
 
-See [LICENSE](LICENSE) for details.
+MIT
+
+<br>
+
+---
+
+<div align="center">
+
+**Built for [Claude](https://claude.ai) · Powered by [PptxGenJS](https://gitbrent.github.io/PptxGenJS/)**
+
+*Stop making slides. Start designing decks.*
+
+</div>
