@@ -1,6 +1,6 @@
 ---
 name: pure-style-slides
-description: "Create designer-quality presentation slides that look like a creative agency built them. Triggers on any mention of slides, presentation, deck, pitch, pptx, or requests like make me a presentation. Produces magazine-quality .pptx files with varied layouts (20 patterns), bold typography, data visualizations, icon-driven design (1,392 built-in vector icons), professional color palettes (5 themes), and comprehensive speaker notes. Detects presentation type, researches topic, proposes a Deck Blueprint, then generates polished slides. Also triggers when user wants to redesign or improve an existing .pptx file. Supports Arabic and RTL content with automatic layout mirroring. Does NOT trigger for pptx repair, text extraction without creating new slides, or simple pptx-to-PDF conversion."
+description: "Create designer-quality presentation slides that look like a creative agency built them. Triggers on any mention of slides, presentation, deck, pitch, pptx, or requests like make me a presentation. Produces magazine-quality .pptx files with varied layouts (20 patterns), bold typography, data visualizations, icon-driven design (1,392 built-in vector icons), professional color palettes (6 themes), and comprehensive speaker notes. Detects presentation type, researches topic, proposes a Deck Blueprint, then generates polished slides. Also triggers when user wants to redesign or improve an existing .pptx file. Supports Arabic and RTL content with automatic layout mirroring. Does NOT trigger for pptx repair, text extraction without creating new slides, or simple pptx-to-PDF conversion."
 ---
 
 # Kimi-Style Slides Skill
@@ -99,10 +99,12 @@ Use the `ask_user_input_v0` tool to present the theme choices as a single-select
 | 3  | Coral Energy       | Warm, dynamic              | Marketing, events, consumer brands, startups  |
 | 4  | Ocean Gradient     | Trustworthy, deep          | Technology, SaaS, enterprise, healthcare      |
 | 5  | Slate & Gold       | Premium, luxurious         | Investment, real estate, awards, luxury       |
+| 6  | Orange             | Bold, warm, growth         | Earnings calls, investor IR, MENA corporate, food/delivery |
 
 After the user selects a theme:
 - **Theme 1 (Pure Minimal)**: Read `references/pure-minimal.md` for the style overrides, color system, typography, card system, and forbidden elements. Pure Minimal uses the SAME 20 layouts from `references/layouts.md` but renders them with its own minimalist styling rules (sharp corners, muted colors, single accent, Swiss typography). Also read `references/layouts.md` for the layout patterns.
 - **Themes 2–5**: Read the full theme details from `references/themes.md` and apply the selected theme's colors and fonts throughout the deck. Use the layout patterns from `references/layouts.md`.
+- **Theme 6 (Orange)**: Read `references/orange.md` for the complete design system including layout overrides, card/badge system, data visualization guidelines (stacked bars, growth pills, guidance tables), and narrative flow. Also read `references/themes.md` for the color summary and `references/layouts.md` for the shared layout patterns. Orange applies its own warm-cream backgrounds, orange section dividers, chocolate text, and IR-optimized chart styling to the shared layouts.
 
 #### Detect Presentation Type
 
@@ -312,29 +314,9 @@ Also read these references from this skill's directory:
 - **Theme library**: `references/themes.md` — color palettes and font pairings
 - **Icon library**: `references/icons.md` — 1,392 built-in vector icons, usage patterns, topic mapping
 - **Icon keyword lookup**: `references/icon-keywords.json` — fast topic→icon resolution (load with `findIcons()` from code-helpers)
-- **Data visualization**: `references/data-visualization.md` — chart recipes, D1–D7 layouts, stat callouts, theme styling, **mandatory insight annotations**
-- **Code helpers**: `references/code-helpers.md` — layout sequencer, icon keyword lookup, RTL helpers, QA automation, handout generator, option object safety, **slide setup & defineLayout**
+- **Data visualization**: `references/data-visualization.md` — chart recipes, D1–D7 layouts, stat callouts, theme styling
+- **Code helpers**: `references/code-helpers.md` — layout sequencer, icon keyword lookup, RTL helpers, QA automation, handout generator, option object safety
 - **RTL guide** (if RTL content detected): `references/rtl-guide.md` — layout mirroring, font selection, bidirectional content
-
-#### Slide Setup (CRITICAL — Do First)
-
-Before adding any slides, initialize the presentation with the correct layout. Pure Minimal's grid (margins at 0.7", content width 8.6", etc.) assumes a **10" × 5.625"** canvas:
-
-```javascript
-const pres = new PptxGenJS();
-pres.layout = 'LAYOUT_16x9';  // 10" × 5.625" — matches Pure Minimal grid
-```
-
-**Never use `LAYOUT_WIDE`** (13.33" × 7.5") — it breaks all positioning. If using `defineLayout()`, use `width` and `height` (not `w` and `h`):
-
-```javascript
-// ✅ CORRECT
-pres.defineLayout({ name: 'MY_LAYOUT', width: 10, height: 5.625 });
-// ❌ WRONG — silently fails
-pres.defineLayout({ name: 'MY_LAYOUT', w: 10, h: 5.625 });
-```
-
-See `references/code-helpers.md` → "Slide Setup & Layout Initialization" for the full reference.
 
 #### Design Principles
 
@@ -345,13 +327,11 @@ See `references/code-helpers.md` → "Slide Setup & Layout Initialization" for t
 3. **The "sandwich" structure** — dark background for title + closing slides, lighter backgrounds for content slides. Creates visual bookends.
 
 4. **Visual hierarchy** on every slide:
-   - Category label: 11pt, bold, ALL CAPS, charSpacing: 4, color: 888888 → y=0.35
-   - Title (H1): 28-32pt, bold, header font → y=0.65 (0.05" below category label)
+   - Title (H1): 36-44pt, bold, header font
    - Key Message (H2): 20-24pt, bold
    - Supporting Details (body): 14-16pt, body font
    - Stat callouts: 48-72pt, bold, accent color
    - Captions / sources: 10-12pt, muted color
-   - **Anti-overlap rule**: First content element must start at y≥1.45 (0.10" below title bottom). See `references/pure-minimal.md` → "Title / Category Label Positioning" for exact helper functions.
 
 5. **Every slide needs a visual element** — non-negotiable. Options:
    - Icon in colored circle (prefer built-in vector icons; fall back to react-icons → sharp → PNG pipeline)
@@ -380,8 +360,6 @@ See `references/code-helpers.md` → "Slide Setup & Layout Initialization" for t
    - Single key stats → large number callouts (60-72pt) with trend indicators instead of charts
    - Use data-specific layouts D1–D7 from the data visualization reference
    - Chart titles should state the insight ("Revenue Grew 58%"), not just label the data ("Quarterly Revenue")
-   - **MANDATORY: Every analysis/data slide must include a visible written insight** — a card, callout, or annotation that states the "so what?" of the chart. Charts show evidence; insight text tells the audience what it means. Use `makeCard()` with accent-left bar or italic text below the chart. See `references/data-visualization.md` → "Mandatory Insight Annotation Pattern" for code recipes.
-   - For doughnut/pie charts, use `showPercent: true` (valid PptxGenJS property) to display percentage labels on segments
 
 8. **Shapes for structure** — colored rectangles and overlays create:
    - Card layouts (white cards with shadow on colored backgrounds)
@@ -596,7 +574,8 @@ Copy the handout to `/mnt/user-data/outputs/handout.pdf` and present alongside t
 |------|-------|
 | PptxGenJS API | `/mnt/skills/public/pptx/pptxgenjs.md` |
 | Layout library — Magazine mode (20 patterns) | `references/layouts.md` (this skill) |
-| Theme library — Magazine mode (4 palettes) | `references/themes.md` (this skill) |
+| Theme library — Magazine mode (5 palettes) | `references/themes.md` (this skill) |
+| **Orange theme — IR/earnings design system** | **`references/orange.md` (this skill)** |
 | **Icon library — 1,392 vector icons** | **`references/icons.md` (this skill)** |
 | **Icon keyword lookup — fast topic→icon** | **`references/icon-keywords.json` (this skill)** |
 | **Data visualization — charts, layouts, styling** | **`references/data-visualization.md` (this skill)** |

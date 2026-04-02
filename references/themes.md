@@ -19,6 +19,7 @@ Curated color palettes and font pairings for Magazine-mode presentations. Each t
 | 2 | Coral Energy | Warm, dynamic | Marketing, events, consumer brands, startups |
 | 3 | Ocean Gradient | Trustworthy, deep | Technology, SaaS, enterprise, healthcare |
 | 4 | Slate & Gold | Premium, luxurious | Investment, real estate, awards, luxury |
+| 5 | Orange | Bold, warm, growth | Earnings calls, investor IR, MENA corporate, food/delivery platforms |
 
 ---
 
@@ -106,6 +107,33 @@ TEXT_MUTED:  7F8C8D  (muted slate)
 
 ---
 
+## 5. Orange
+
+Bold and warm — investor-grade confidence with MENA identity. Inspired by talabat's IR presentation system. Warm cream backgrounds replace cold grays, chocolate brown anchors the text, and vivid orange drives energy. Optimized for financial data visualization with stacked bar charts, KPI card rows, and guidance tracker tables.
+
+```
+PRIMARY:    FF5722  (vivid orange)
+SECONDARY:  3D1F00  (chocolate brown)
+ACCENT:     7AB648  (leaf green — growth indicators)
+BG_DARK:    3D1F00  (chocolate brown)
+BG_LIGHT:   F5EDE3  (warm cream — default background)
+TEXT_DARK:   3D1F00  (chocolate brown)
+TEXT_LIGHT:  FFFFFF  (white)
+TEXT_MUTED:  9B8E82  (warm gray)
+```
+
+**Fonts**: Trebuchet MS (headers) + Calibri (body)
+
+**Chart palette** (stacked bars): 3D1F00, 6B4226, FF5722, 7AB648
+
+**Distinctive patterns**: warm cream slide backgrounds, orange full-bleed section dividers, growth pill badges above chart bars, 4-KPI icon card rows, guidance tracker tables with green checkmark badges, split title slides (orange + photo), chocolate guidance callout boxes.
+
+**Full design system**: See `references/orange.md` for complete layout overrides, card system, badge system, data visualization guidelines, and narrative flow templates.
+
+**Best for**: Earnings calls, investor presentations, capital markets days, IPO roadshows, MENA corporate, food delivery / logistics / marketplace platforms, annual reports
+
+---
+
 ## Choosing the Right Theme
 
 **By industry**:
@@ -113,13 +141,14 @@ TEXT_MUTED:  7F8C8D  (muted slate)
 - Marketing / Consumer / Startups → Coral Energy
 - Technology / SaaS / Healthcare → Ocean Gradient
 - Investment / Real Estate / Luxury → Slate & Gold
+- Food Delivery / Logistics / MENA Platforms → Orange
 - C-suite / Board → Midnight Executive or Pure Minimal (separate design system)
 - Education / Training → Coral Energy or Ocean Gradient
 - Islamic Finance / Halal → Slate & Gold or Ocean Gradient
 
 **By audience**:
 - C-suite / Board → Pure Minimal (separate) or Midnight Executive
-- Investors → Slate & Gold
+- Investors / Analysts → Slate & Gold or Orange
 - Technical audience → Ocean Gradient
 - General / Mixed → Coral Energy
 - Creative / Design → Pure Minimal (separate)
@@ -129,4 +158,13 @@ TEXT_MUTED:  7F8C8D  (muted slate)
 - Energetic / Dynamic → Coral Energy
 - Trustworthy / Calm → Ocean Gradient
 - Premium / Luxurious → Slate & Gold
+- Bold / Warm / Growth → Orange
 - Ultra-clean / Swiss → Pure Minimal (separate design system)
+
+**By presentation type**:
+- Earnings calls / IR decks → Orange or Midnight Executive
+- Capital Markets Day → Orange
+- Pitch decks → Coral Energy, Slate & Gold, or Orange
+- Quarterly reviews → Midnight Executive or Orange
+- Product launches → Coral Energy
+
